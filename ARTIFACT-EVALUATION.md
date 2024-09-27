@@ -2,7 +2,7 @@
 
 Paper title: **Re-visiting Authorized Private Set Intersection: A New Privacy-Preserving Variant and Two Protocols**
 
-Artifacts HotCRP Id: **#19** (not your paper Id, but the artifacts id)
+Artifacts HotCRP Id: **#19** 
 
 Requested Badge: **Available**
 

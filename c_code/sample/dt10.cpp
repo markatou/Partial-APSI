@@ -500,7 +500,6 @@ int main(int argc, char *argv[]) {
 
     //times = times + argv[3] + " " + argv[4] + " " + argv[5] + " ";
 
-    cout << "Getting x " << "\n";
     set<string> xs;
     if (data_type == "credit_cards") {
      xs = generate_credit_cards(n);
@@ -511,7 +510,6 @@ int main(int argc, char *argv[]) {
     }
 
 
-    cout << "Getting y " << "\n";
     set<string> ys;
     if (data_type == "credit_cards") {
      ys = generate_credit_cards(m);
@@ -522,9 +520,7 @@ int main(int argc, char *argv[]) {
     }
 
     auto t1 = high_resolution_clock::now();
-    cout << "Computing ideal functionality " << "\n";
     int correct_inter = set_intersection_strings(xs,ys);
-    cout << "Correct intersection size = " << correct_inter << endl;
     auto t2 = high_resolution_clock::now();
     auto ms_int = duration_cast<milliseconds>(t2 - t1);
     std::cout << "Ideal functionality takes " <<  ms_int.count() << "ms\n";

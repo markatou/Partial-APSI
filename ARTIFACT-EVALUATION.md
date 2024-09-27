@@ -29,4 +29,4 @@ Please see `README.md` for details on how to set up and run the code.
 ### Accessibility (All badges)
 The artifact can be accessed at the following link: [https://github.com/markatou/Partial-APSI](https://github.com/markatou/Partial-APSI).
 
-Commit-id: dc725b0dd9a3346d5bedf06b1a42068755d5eb12 The latest commit-id can be 
+Commit-id: dc725b0dd9a3346d5bedf06b1a42068755d5eb12 

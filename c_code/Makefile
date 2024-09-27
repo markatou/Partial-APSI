@@ -35,18 +35,18 @@ endif
 SAMPLE_SRC= dt10.cpp automate.cpp
 
 # For Mac M1
-# CFLAGS+=-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include
-# LDFLAGS+=-lomp
-# ARCH=x86_64 
-# CLANG_TARGET=x86_64-apple-macos 
+CFLAGS+=-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include
+LDFLAGS+=-lomp
+ARCH=x86_64 
+CLANG_TARGET=x86_64-apple-macos 
 
 # For Mac M2
-CFLAGS+=-Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
-LDFLAGS+=-lomp
-ARCH=arm64 
-CLANG_TARGET=arm64-apple-macos
-CFLAGS+=-I/opt/homebrew/opt/libomp/include/
-LDFLAGS+=-L/opt/homebrew/opt/libomp/lib
+# CFLAGS+=-Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
+# LDFLAGS+=-lomp
+# ARCH=arm64 
+# CLANG_TARGET=arm64-apple-macos
+# CFLAGS+=-I/opt/homebrew/opt/libomp/include/
+# LDFLAGS+=-L/opt/homebrew/opt/libomp/lib
 
 # These flags for Linux 
 #CFLAGS+=-fopenmp

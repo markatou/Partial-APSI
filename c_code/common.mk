@@ -136,9 +136,9 @@ ifeq ($(MCL_USE_GMP),1)
   GMP_LIB=-lgmp -lgmpxx
   ifeq ($(UNAME_S),Darwin)
     # For Linux or M1
-    # GMP_DIR=/usr/local/opt/libomp
+    GMP_DIR=/usr/local/opt/libomp
     # For M2
-    GMP_DIR=/opt/homebrew/opt/gmp
+    # GMP_DIR=/opt/homebrew/opt/gmp
   endif
   ifneq ($(GMP_DIR),)
     CFLAGS+=-I$(GMP_DIR)/include

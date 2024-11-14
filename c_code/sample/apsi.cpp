@@ -140,8 +140,8 @@ Fp12 server_y_hats_apsi(string y, G2 pks, Fr s) {
 
 
 
-// APSI protocol 
-void APSI(set<string> xs, set<string> ys, int correct_inter)
+// APSI protocol, takes as input two sets of strings and returns their intersection size.
+int APSI(set<string> xs, set<string> ys)
 {
 	string client_id = "123456789";
 	int authorize_time=0;
@@ -225,6 +225,7 @@ void APSI(set<string> xs, set<string> ys, int correct_inter)
 	intersect_time += ms_int.count();
 
 	std::cout << "The intersection phase takes " <<  intersect_time << "ms\n";
+	return inter_size;
 
 }
 
@@ -258,7 +259,7 @@ int main(int argc, char *argv[]) {
 
 	// Now, we conpute the ideal functionality (or the intersection of the two sets in plaintext)
     auto t1 = high_resolution_clock::now();
-	int correct_inter = set_intersection_strings(xs,ys);
+	set_intersection_strings(xs,ys);
 	auto t2 = high_resolution_clock::now();
 	auto ms_int = duration_cast<milliseconds>(t2 - t1);
 	std::cout << "Ideal functionality requires " <<  ms_int.count() << "ms\n";
@@ -266,7 +267,7 @@ int main(int argc, char *argv[]) {
 	
 	// The APSI protocol follows: 
 	t1 = high_resolution_clock::now();
-	APSI(xs, ys, correct_inter);
+	APSI(xs, ys);
 	t2 = high_resolution_clock::now();
 	ms_int = duration_cast<milliseconds>(t2 - t1);
 	std::cout << "APSI protocol completed. Total time: " <<  ms_int.count() << "ms\n";

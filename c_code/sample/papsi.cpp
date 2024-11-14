@@ -139,8 +139,8 @@ Fp12 server_y_hats_apsi(string y, G2 pks, Fr s) {
 
 
 
-// Partial-APSI protocol
-string PAPSI(set<string> xs, set<string> ys, int correct_inter, int p)
+// Partial-APSI protocol, takes as input two sets of strings and returns their intersection size.
+int PAPSI(set<string> xs, set<string> ys, int p)
 {
 	string client_id = "123456789";
 	int authorize_time=0;
@@ -366,6 +366,7 @@ string PAPSI(set<string> xs, set<string> ys, int correct_inter, int p)
 	ms_int = duration_cast<milliseconds>(t2 - t1);
 	intersect_time += ms_int.count();
 	std::cout << "The intersection phase takes " <<  intersect_time << "ms\n";
+	return inter_size;
 }
 
 
@@ -410,7 +411,7 @@ int main(int argc, char *argv[]) {
 
 	
 	t1 = high_resolution_clock::now();
-	PAPSI(xs, ys, correct_inter, p);
+	PAPSI(xs, ys,p);
 	t2 = high_resolution_clock::now();
 	ms_int = duration_cast<milliseconds>(t2 - t1);
 	std::cout << "Partial-APSI protocol completed. Total time: " <<  ms_int.count() << "ms\n";

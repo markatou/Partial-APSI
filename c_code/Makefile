@@ -5,32 +5,14 @@ EXE_DIR?=bin
 MCL_SIZEOF_UNIT?=$(shell expr $(BIT) / 8)
 CLANG?=clang++$(LLVM_VER)
 SRC_SRC=fp.cpp bn_c256.cpp bn_c384.cpp bn_c384_256.cpp bn_c512.cpp she_c256.cpp
-TEST_SRC=fp_test.cpp ec_test.cpp fp_util_test.cpp window_method_test.cpp elgamal_test.cpp fp_tower_test.cpp gmp_test.cpp bn_test.cpp bn384_test.cpp glv_test.cpp paillier_test.cpp she_test.cpp vint_test.cpp bn512_test.cpp conversion_test.cpp
-TEST_SRC+=bn_c256_test.cpp bn_c384_test.cpp bn_c384_256_test.cpp bn_c512_test.cpp
-TEST_SRC+=she_c256_test.cpp she_c384_test.cpp she_c384_256_test.cpp
-TEST_SRC+=aggregate_sig_test.cpp array_test.cpp
-TEST_SRC+=bls12_test.cpp
-TEST_SRC+=mapto_wb19_test.cpp
-TEST_SRC+=modp_test.cpp
-TEST_SRC+=ecdsa_test.cpp ecdsa_c_test.cpp
-TEST_SRC+=mul_test.cpp
-TEST_SRC+=bint_test.cpp
-TEST_SRC+=low_func_test.cpp
-ifneq ($(MCL_USE_GMP),1)
-  TEST_SRC+=static_init_test.cpp
-endif
-TEST_SRC+=invmod_test.cpp
+
+
 LIB_OBJ=$(OBJ_DIR)/fp.o
 ifeq ($(MCL_STATIC_CODE),1)
   LIB_OBJ+=obj/static_code.o
-  TEST_SRC=bls12_test.cpp
 endif
 ifeq ($(CPU),x86-64)
   MCL_USE_XBYAK?=1
-  TEST_SRC+=mont_fp_test.cpp sq_test.cpp
-  ifeq ($(MCL_USE_XBYAK),1)
-    TEST_SRC+=fp_generator_test.cpp
-  endif
 endif
 SAMPLE_SRC= dt10.cpp apsi.cpp papsi.cpp
 
@@ -326,40 +308,10 @@ src/static_code.asm: src/dump_code
 obj/static_code.o: src/static_code.asm
 	nasm $(NASM_ELF_OPT) -o $@ $<
 
-bin/static_code_test.exe: test/static_code_test.cpp src/fp.cpp obj/static_code.o
-	$(CXX) -o $@ -O4 $^ -g -DMCL_DONT_USE_XBYAK -DMCL_STATIC_CODE -DMCL_MAX_BIT_SIZE=384 -DMCL_SIZEOF_UNIT=8 -I include -Wall -Wextra
-
-# set PATH for mingw, set LD_LIBRARY_PATH is for other env
-COMMON_LIB_PATH="../../../lib"
-PATH_VAL=$$PATH:$(COMMON_LIB_PATH) LD_LIBRARY_PATH=$(COMMON_LIB_PATH) DYLD_LIBRARY_PATH=$(COMMON_LIB_PATH) CGO_CFLAGS="-I$(shell pwd)/include" CGO_LDFLAGS="-L../../../lib"
-test_go256: $(MCL_LIB) $(BN256_LIB)
-	$(RM) $(BLS256_SLIB) $(MCL_SLIB)
-	cd ffi/go/mcl && go test -tags bn256 .
-
-test_go384: $(MCL_LIB) $(BN384_LIB)
-	$(RM) $(BLS384_SLIB) $(MCL_SLIB)
-	cd ffi/go/mcl && go test -tags bn384 .
-
-test_go384_256: $(MCL_LIB) $(BN384_256_LIB)
-	$(RM) $(BLS384_256_SLIB) $(MCL_SLIB)
-	cd ffi/go/mcl && go test -tags bn384_256 .
-
-test_go: # Use static libraries, not shared libraries.
-	$(MAKE) test_go256
-	$(MAKE) test_go384
-	$(MAKE) test_go384_256
-
-test_python_she: $(SHE256_SLIB)
-	cd ffi/python && env LD_LIBRARY_PATH="../../lib" DYLD_LIBRARY_PATH="../../lib" PATH=$$PATH:"../../lib" python3 she.py
-test_python:
-	$(MAKE) test_python_she
-
-test_java:
-	$(MAKE) -C ffi/java test
 
 ##################################################################
 
-VPATH=test sample src
+VPATH= sample src
 
 .SUFFIXES: .cpp .d .exe .c .o
 
@@ -417,48 +369,7 @@ $(EXE_DIR)/bint_test.exe: $(OBJ_DIR)/bint_test.o $(MCL_LIB)
 SAMPLE_EXE=$(addprefix $(EXE_DIR)/,$(addsuffix .exe,$(basename $(SAMPLE_SRC))))
 sample: $(SAMPLE_EXE) $(MCL_LIB)
 
-TEST_EXE=$(addprefix $(EXE_DIR)/,$(TEST_SRC:.cpp=.exe))
-test_ci: $(TEST_EXE)
-	@sh -ec 'for i in $(TEST_EXE); do echo $$i; env LSAN_OPTIONS=verbosity=0:log_threads=1 $$i; done'
-test: $(TEST_EXE)
-	@echo test $(TEST_EXE)
-	@sh -ec 'for i in $(TEST_EXE); do $$i|grep "ctest:name"; done' > result.txt
-	@grep -v "ng=0, exception=0" result.txt; if [ $$? -eq 1 ]; then echo "all unit tests succeed"; else exit 1; fi
 
-EMCC_OPT=-I./include -I./src -Wall -Wextra
-EMCC_OPT+=-O4 -DNDEBUG -DMCLSHE_WIN_SIZE=8
-EMCC_OPT+=-s WASM=1 -s NO_EXIT_RUNTIME=1 -s NODEJS_CATCH_EXIT=0 -s NODEJS_CATCH_REJECTION=0  -s MODULARIZE=1 #-s ASSERTIONS=1
-EMCC_OPT+=-DCYBOZU_MINIMUM_EXCEPTION
-EMCC_OPT+=-s ABORTING_MALLOC=0
-SHE_C_DEP=src/fp.cpp src/she_c_impl.hpp include/mcl/she.hpp include/mcl/fp.hpp include/mcl/op.hpp include/mcl/she.h Makefile
-MCL_C_DEP=src/fp.cpp include/mcl/impl/bn_c_impl.hpp include/mcl/bn.hpp include/mcl/fp.hpp include/mcl/op.hpp include/mcl/bn.h Makefile
-ifeq ($(MCL_USE_LLVM),2)
-  EMCC_OPT+=src/base64m.ll -DMCL_USE_LLVM
-  SHE_C_DEP+=src/base64m.ll
-endif
-
-# test
-bin/emu:
-	$(CXX) -g -o $@ src/fp.cpp src/bn_c256.cpp test/bn_c256_test.cpp -DMCL_DONT_USE_XBYAK -DMCL_SIZEOF_UNIT=$(MCL_SIZEOF_UNIT) -DMCL_MAX_BIT_SIZE=256 -I./include -DMCL_BINT_ASM=0
-bin/pairing_c_min.exe: sample/pairing_c.c include/mcl/vint.hpp src/fp.cpp include/mcl/bn.hpp
-	$(CXX) -std=c++03 -O4 -g -fno-threadsafe-statics -fno-exceptions -fno-rtti -o $@ sample/pairing_c.c src/fp.cpp src/bn_c384_256.cpp -I./include -DXBYAK_NO_EXCEPTION -DMCL_SIZEOF_UNIT=$(MCL_SIZEOF_UNIT) -DMCL_MAX_BIT_SIZE=384 -DCYBOZU_DONT_USE_STRING -DCYBOZU_DONT_USE_EXCEPTION -DNDEBUG # -DMCL_DONT_USE_CSPRNG
-bin/ecdsa-emu:
-	$(CXX) -g -o $@ src/fp.cpp test/ecdsa_test.cpp -DMCL_SIZEOF_UNIT=4 -D__EMSCRIPTEN__ -DMCL_MAX_BIT_SIZE=256 -I./include
-bin/ecdsa-c-emu:
-	$(CXX) -g -o $@ src/fp.cpp src/ecdsa_c.cpp test/ecdsa_c_test.cpp -DMCL_MAX_BIT_SIZE=256 -DMCL_SIZEOF_UNIT=4 -DMCL_BINT_ASM=0 -I ./include -DMCL_WASM32
-
-bin/llvm_test64.exe: test/llvm_test.cpp src/base64.ll
-	$(CLANG) -o $@ -Ofast -DNDEBUG -Wall -Wextra -I ./include test/llvm_test.cpp src/base64.ll
-
-bin/llvm_test32.exe: test/llvm_test.cpp src/base32.ll
-	$(CLANG) -o $@ -Ofast -DNDEBUG -Wall -Wextra -I ./include test/llvm_test.cpp src/base32.ll -m32
-
-make_tbl:
-	$(MAKE) ../bls/src/qcoeff-bn254.hpp
-
-../bls/src/qcoeff-bn254.hpp:  $(MCL_LIB) misc/precompute.cpp
-	$(CXX) -o misc/precompute misc/precompute.cpp $(CFLAGS) $(MCL_LIB) $(LDFLAGS)
-	./misc/precompute > ../bls/src/qcoeff-bn254.hpp
 
 MCL_STANDALONE?=-std=c++03 -O4 -fpic -fno-exceptions -fno-threadsafe-statics -fno-rtti -fno-stack-protector -fpic -I ./include -DNDEBUG -DMCL_STANDALONE -DMCL_SIZEOF_UNIT=$(MCL_SIZEOF_UNIT) -DMCL_MAX_BIT_SIZE=384 -D_FORTIFY_SOURCE=0 -DMCL_USE_LLVM=1 $(CFLAGS_EXTRA)
 ifneq ($(CLANG_TARGET),)
@@ -481,20 +392,7 @@ standalone: libmcl.a libmclbn384_256.a
 clean_standalone:
 	$(RM) libmcl.a libmcl384_256.a *.o
 
-update_xbyak:
-	cp -a ../xbyak/xbyak/xbyak.h ../xbyak/xbyak/xbyak_util.h ../xbyak/xbyak/xbyak_mnemonic.h src/xbyak/
 
-update_cybozulib:
-	cp -a $(addprefix ../cybozulib/,$(wildcard include/cybozu/*.hpp)) include/cybozu/
-
-ANDROID_TARGET=armeabi-v7a arm64-v8a x86_64
-NDK_BUILD?=ndk-build
-android: $(BASE_LL)
-	@$(NDK_BUILD) -C android/jni NDK_DEBUG=0 MCL_LIB_SHARED=$(MCL_LIB_SHARED)
-	@for target in $(ANDROID_TARGET); do \
-		mkdir -p lib/android/$$target; \
-		cp android/obj/local/$$target/libmclbn384_256.a lib/android/$$target/; \
-	done
 
 clean:
 	$(RM) $(LIB_DIR)/*.a $(LIB_DIR)/*.$(LIB_SUF) $(OBJ_DIR)/*.o $(OBJ_DIR)/*.obj $(OBJ_DIR)/*.d $(EXE_DIR)/*.exe $(GEN_EXE) $(BASE_OBJ) $(LIB_OBJ) $(BN256_OBJ) $(BN384_OBJ) $(BN512_OBJ) lib/*.a src/static_code.asm src/dump_code lib/android
@@ -507,23 +405,3 @@ clean_gen:
 MCL_VER=$(shell awk '/static const int version/ { printf("%.2f\n", substr($$6,3,3)/100)}' include/mcl/op.hpp)
 CMakeLists.txt: include/mcl/op.hpp
 	sed -i -e 's/	VERSION [0-9].[0-9][0-9]$$/	VERSION $(MCL_VER)/' $@
-update_version:
-	$(MAKE) CMakeLists.txt
-
-ALL_SRC=$(SRC_SRC) $(TEST_SRC) $(SAMPLE_SRC)
-DEPEND_FILE=$(addprefix $(OBJ_DIR)/, $(addsuffix .d,$(basename $(ALL_SRC))))
--include $(DEPEND_FILE)
-
-PREFIX?=/usr/local
-install: lib/libmcl.a lib/libmcl.$(LIB_SUF)
-	$(MKDIR) $(PREFIX)/include/mcl
-	cp -a include/mcl $(PREFIX)/include/
-	cp -a include/cybozu $(PREFIX)/include/
-	$(MKDIR) $(PREFIX)/lib
-	cp -a lib/libmcl.a lib/libmcl.$(LIB_SUF) $(PREFIX)/lib/
-
-.PHONY: test she-wasm bin/emu android
-
-# don't remove these files automatically
-.SECONDARY: $(addprefix $(OBJ_DIR)/, $(ALL_SRC:.cpp=.o))
-

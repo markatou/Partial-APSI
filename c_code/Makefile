@@ -32,7 +32,7 @@ ifeq ($(CPU),x86-64)
     TEST_SRC+=fp_generator_test.cpp
   endif
 endif
-SAMPLE_SRC= dt10.cpp automate.cpp
+SAMPLE_SRC= dt10.cpp apsi.cpp papsi.cpp
 
 # For Mac M1
 CFLAGS+=-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include

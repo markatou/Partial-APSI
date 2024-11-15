@@ -11,9 +11,8 @@ The third protocol is re-implemented for comparison.
 # Getting Started
 
 First make sure that the [GMP Library](https://gmplib.org/), [LLVM](https://llvm.org/), and [libOMP](https://formulae.brew.sh/formula/libomp) are installed.
-GMP can be installed using the following terminal commands:
+For example, for MacOS, they can be installed using the following terminal command:
 
-    sudo apt install libgmp-dev (on Ubuntu)
     brew install gmp llvm libomp (on MacOS)
 
 Clone this respository and navigate to the `c_code` directory. There are three Makefiles: `Makefile-Linux`, `Makefile-MacM1`, and `Makefile-MacM2`.

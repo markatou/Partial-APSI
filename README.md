@@ -30,30 +30,24 @@ Then run:
     make clean
     make sample
 
-# Running the APSI/Partial-APSI Protocol
+# Running the Protocols
 
-To run our APSI or Partial-APSI protocol, use the following command:
+To run our APSI, Partial-APSI or DT10's protocol (from "Practical Private Set Intersection Protocols with Linear Computational and Bandwidth Complexity" by Emiliano De Cristofaro and Gene Tsudik (FC 2010)), use the following command:
 
-    bin/automate.exe {apsi, papsi} {credit_cards, random} lenght_of_random_string n m outputfile p
+    bin/{apsi, papsi, dt10}.exe {credit_cards, random} lenght_of_random_string n m p
 
 Here, `credit_cards` generates random 16 digit strings, and `random` generates random strings of length specified by `length_of_random_string` (note that the `length_of_random_string` parameter must be added regardless of whether the credit card or random option is chosen; however, in the case of the credit card option, the parameter is simply ignored). Parameters `n` and `m` denote the sizes of the client and server sets, respectively. The `outputfile` is the name of the file to which the results are written to. Laslty, `p` is a percent from 1 to 100 denoting the percent of client values revealed to judge in Partial-APSI (again, this parameter must be added regardless of whether `apsi` or `papsi` is chosen, but in the case of APSI, the parameter is simply ignored). 
 
 Example for APSI with a random dataset:
 
-    bin/automate.exe apsi random 4 1000 1000 "results.txt" 100
+    bin/automate.exe apsi random 4 1000 1000 
 
 Example for Partial-APSI with a credit card dataset:
 
-    bin/automate.exe apsi credit_cards 0 1000 1000 "results.txt" 50
+    bin/automate.exe apsi credit_cards 0 1000 1000  50
 
 
-# Running the DT10 Protocol
+Example for DT10 with a random dataset:
 
-To run the APSI protocol from "Practical Private Set Intersection Protocols with Linear Computational and Bandwidth Complexity" by Emiliano De Cristofaro and Gene Tsudik (FC 2010), use the following command:
-
-    bin/dt10.exe dt10 {credit_cards, random} lenght_of_random_string n m outputfile
-
-Example:
-
-    bin/dt10.exe dt10 random 4 1000 1000 "results.txt" 100
+    bin/dt10.exe dt10 random 4 1000 1000 
 

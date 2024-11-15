@@ -17,7 +17,7 @@ GMP can be installed using the following terminal commands:
     brew install gmp (on MacOS)
 
 Clone this respository and navigate to the `c_code` directory. There are three Makefiles: `Makefile-Linux`, `Makefile-MacM1`, and `Makefile-MacM2`.
-Find the correct one for your machine and rename it to `Makefile`. 
+Find the correct one for your machine and rename it to `Makefile`. If you want to run on an M2 Mac, there is an additional change. Replace `common.mk` with `common-m2.mk`. 
 
 Then run:
 

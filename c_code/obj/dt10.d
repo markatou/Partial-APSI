@@ -1,4 +1,4 @@
-obj/dt10.o: sample/dt10.cpp include/mcl/bn256.hpp include/mcl/bn.hpp \
+obj/dt10.o: protocols/dt10.cpp include/mcl/bn256.hpp include/mcl/bn.hpp \
   include/mcl/fp_tower.hpp include/mcl/fp.hpp include/mcl/config.hpp \
   include/cybozu/inttype.hpp include/cybozu/hash.hpp \
   include/cybozu/stream.hpp include/cybozu/exception.hpp \

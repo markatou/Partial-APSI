@@ -311,7 +311,7 @@ obj/static_code.o: src/static_code.asm
 
 ##################################################################
 
-VPATH= sample src
+VPATH= protocols src
 
 .SUFFIXES: .cpp .d .exe .c .o
 
@@ -367,7 +367,7 @@ $(EXE_DIR)/bint_test.exe: $(OBJ_DIR)/bint_test.o $(MCL_LIB)
 	$(PRE)$(CXX) $< -o $@ $(MCL_LIB) $(LDFLAGS) -lgmp -lgmpxx
 
 SAMPLE_EXE=$(addprefix $(EXE_DIR)/,$(addsuffix .exe,$(basename $(SAMPLE_SRC))))
-sample: $(SAMPLE_EXE) $(MCL_LIB)
+protocols: $(SAMPLE_EXE) $(MCL_LIB)
 
 
 

@@ -6,7 +6,7 @@ In this respository, you will find implementations and tests for three protocols
 2. The Parital-APSI protocol from Falzon and Markatou (PoPETS 2025)
 3. The APSI protocol from Emiliano De Cristofaro and Gene Tsudik (Financial Crypto 2010)
 
-The third protocol is implemented for comparison. 
+The third protocol is re-implemented for comparison. 
 
 # Getting Started
 

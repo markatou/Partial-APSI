@@ -16,14 +16,8 @@ GMP can be installed using the following terminal commands:
     sudo apt install libgmp-dev (on Ubuntu)
     brew install gmp (on MacOS)
 
-Then clone this respository and make the following edits to the files described below, as needed:
-
-- To build for **Mac M1**, simply navigate to the `c_code` directory.
-
-- To build for **Mac M2**, go into `c_code` and edit the Makefile to comment out the Mac M1 flags (Lines 38-41) and 
-Linux flags (Lines 52-53), and uncomment the Mac M2 ones (Lines 44-49). Then go to common.mk and comment out the path to GMP for Mac M1/Linux (line 139) and uncomment the path for M2 (line 140).
-
-- To build for **Linux**, go into `c_code` and edit the Makefile to comment out the Mac M1 flags (Lines 38-41) and Mac M2 flags (Lines 44-49), and uncomment the Linux flags (Lines 52-53). Then go to common.mk and ensure that the path to GMP for Mac M1/Linux (line 139) is un commented, and that the path for M2 is commented out (line 140). 
+Clone this respository and navigate to the `c_code` directory. There are three Makefiles: `Makefile-Linux`, `Makefile-MacM1`, and `Makefile-MacM2`.
+Find the correct one for your machine and rename it to `Makefile`. 
 
 Then run:
 

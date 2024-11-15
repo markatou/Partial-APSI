@@ -10,11 +10,11 @@ The third protocol is re-implemented for comparison.
 
 # Getting Started
 
-First make sure that the [GMP Library](https://gmplib.org/) is installed; this library is necessary for the MCL pairings operations. 
+First make sure that the [GMP Library](https://gmplib.org/), [LLVM](https://llvm.org/), and [libOMP](https://formulae.brew.sh/formula/libomp) are installed.
 GMP can be installed using the following terminal commands:
 
     sudo apt install libgmp-dev (on Ubuntu)
-    brew install gmp (on MacOS)
+    brew install gmp llvm libomp (on MacOS)
 
 Clone this respository and navigate to the `c_code` directory. There are three Makefiles: `Makefile-Linux`, `Makefile-MacM1`, and `Makefile-MacM2`.
 Find the correct one for your machine and rename it to `Makefile`. If you want to run on an M2 Mac, there is an additional change. Replace `common.mk` with `common-m2.mk`. 

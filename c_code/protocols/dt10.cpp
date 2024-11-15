@@ -179,8 +179,6 @@ int DT10(set<string> xs, set<string> ys)
     auto t1 = high_resolution_clock::now();
     #pragma omp parallel for 
     for (int i=0; i<new_xs.size(); i++) {
-
-        // client start
         t1 = high_resolution_clock::now();
         std::hash<std::string> hasher;
         auto hashed = hasher(new_xs[i]); 
@@ -188,7 +186,7 @@ int DT10(set<string> xs, set<string> ys)
         mpz_t hci; 
         mpz_init(hci);
         mpz_set_ui(hci,hashed);
-        mpz_mod(hci, hci, p_minus_one); //n_minus_1
+        mpz_mod(hci, hci, p_minus_one); 
         mpz_add_ui(hci,hci,1);
         
         mpz_t sigma_i; 
@@ -210,7 +208,7 @@ int DT10(set<string> xs, set<string> ys)
     mpz_t hci; 
     mpz_init(hci);
     mpz_set_ui(hci,hashed);
-    mpz_mod(hci, hci, p_minus_one); //n_minus_1
+    mpz_mod(hci, hci, p_minus_one);
     mpz_add_ui(hci,hci,1);        
     mpz_t sigma_i; 
     mpz_init(sigma_i);
@@ -223,7 +221,7 @@ int DT10(set<string> xs, set<string> ys)
         mpz_t hci; 
         mpz_init(hci);
         mpz_set_ui(hci,hashed);
-        mpz_mod(hci, hci, p_minus_one); //n_minus_1
+        mpz_mod(hci, hci, p_minus_one); 
         mpz_add_ui(hci,hci,1);
         mpz_t sigma_i; 
         mpz_init(sigma_i);
@@ -254,7 +252,7 @@ int DT10(set<string> xs, set<string> ys)
     mpz_t Rs;
     mpz_init(Rs);
     mpz_set_ui(Rs, rand());
-    mpz_mod(Rs,Rs,p_minus_one); //n_minus_1
+    mpz_mod(Rs,Rs,p_minus_one);
     mpz_add_ui(Rs, Rs, 1);
     mpz_t Z, eRs;
     mpz_init(Z);
@@ -282,7 +280,7 @@ int DT10(set<string> xs, set<string> ys)
         mpz_t hci; 
         mpz_init(hci);
         mpz_set_ui(hci,hashed);
-        mpz_mod(hci, hci, p_minus_one); //n_minus_1
+        mpz_mod(hci, hci, p_minus_one); 
         mpz_add_ui(hci,hci,1);
         mpz_t sigma_i; 
         mpz_init(sigma_i);
@@ -372,7 +370,7 @@ int DT10(set<string> xs, set<string> ys)
         mpz_sub_ui(e_minus_2,e,2);
 
         mpz_set_ui(hsj2, hsj);
-        mpz_mod(hsj2, hsj2, p_minus_one); //n_minus_1
+        mpz_mod(hsj2, hsj2, p_minus_one);
         mpz_add_ui(hsj2,hsj2,1);
         mpz_mul(hsj2, hsj2, hsj2);
         mpz_powm(hsj2, hsj2, Rs, n);

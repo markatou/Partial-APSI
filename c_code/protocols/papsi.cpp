@@ -255,7 +255,6 @@ int PAPSI(set<string> xs, set<string> ys, int p)
 	vector<G1> signatures(blind_xs.size());
 	#pragma omp parallel for 
 	for (int i=0; i<blind_xs.size(); i++) {
-		// sign
 		G1 sign;
 		G1::mul(sign, blind_xs[i], sk); 
 		signatures[i] = sign;

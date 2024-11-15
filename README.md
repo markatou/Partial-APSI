@@ -28,26 +28,26 @@ Linux flags (Lines 52-53), and uncomment the Mac M2 ones (Lines 44-49). Then go 
 Then run:
 
     make clean
-    make sample
+    make protocols
 
 # Running the Protocols
 
 To run our APSI, Partial-APSI or DT10's protocol (from "Practical Private Set Intersection Protocols with Linear Computational and Bandwidth Complexity" by Emiliano De Cristofaro and Gene Tsudik (FC 2010)), use the following command:
 
-    bin/{apsi, papsi, dt10}.exe {credit_cards, random} lenght_of_random_string n m p
+    bin/{apsi, papsi, dt10}.exe {credit_cards, random} lenght_of_random_string n m (p)
 
-Here, `credit_cards` generates random 16 digit strings, and `random` generates random strings of length specified by `length_of_random_string` (note that the `length_of_random_string` parameter must be added regardless of whether the credit card or random option is chosen; however, in the case of the credit card option, the parameter is simply ignored). Parameters `n` and `m` denote the sizes of the client and server sets, respectively. The `outputfile` is the name of the file to which the results are written to. Laslty, `p` is a percent from 1 to 100 denoting the percent of client values revealed to judge in Partial-APSI (again, this parameter must be added regardless of whether `apsi` or `papsi` is chosen, but in the case of APSI, the parameter is simply ignored). 
+Here, `credit_cards` generates random 16 digit strings, and `random` generates random strings of length specified by `length_of_random_string` (note that the `length_of_random_string` parameter must be added regardless of whether the credit card or random option is chosen; however, in the case of the credit card option, the parameter is simply ignored). Parameters `n` and `m` denote the sizes of the client and server sets, respectively. The `outputfile` is the name of the file to which the results are written to. Laslty, `p` is a percent from 1 to 100 denoting the percent of client values revealed to judge in Partial-APSI (this parameter is to be omitted when running APSI and DT10).
 
 Example for APSI with a random dataset:
 
-    bin/automate.exe apsi random 4 1000 1000 
+    bin/apsi.exe random 4 1000 1000 
 
 Example for Partial-APSI with a credit card dataset:
 
-    bin/automate.exe apsi credit_cards 0 1000 1000  50
+    bin/papsi.exe credit_cards 0 1000 1000  50
 
 
 Example for DT10 with a random dataset:
 
-    bin/dt10.exe dt10 random 4 1000 1000 
+    bin/dt10.exe random 4 1000 1000 
 

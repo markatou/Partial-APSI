@@ -1,10 +1,22 @@
-This is the artifact for "Re-visiting Authorized Private Set Intersection: A New Privacy-Preserving Variant and Two Protocols" by Francesca Falzon and Evangelia Anna Markatou (PoPETS 2025).
+This is the artifact for "Re-visiting Authorized Private Set Intersection: A New Privacy-Preserving Variant and Two Protocols" by Francesca Falzon and Evangelia Anna Markatou (PoPETS 2025). This respository builds upon the [MCL Pairings Library](https://github.com/herumi/mcl/tree/master). 
 
-This respository builds upon the [MCL Pairings Library](https://github.com/herumi/mcl/tree/master). 
+In this respository, you will find implementations and tests for three protocols:
+
+1. The Authorized Private Set Intersection (APSI) protocol from Falzon and Markatou (PoPETS 2025)
+2. The Parital-APSI protocol from Falzon and Markatou (PoPETS 2025)
+3. The APSI protocol from Emiliano De Cristofaro and Gene Tsudik (Financial Crypto 2010)
+
+The third protocol is implemented for comparison. 
 
 # Getting Started
 
-Start by cloning the respository and making the following edits to the files described below, as needed:
+First make sure that the [GMP Library](https://gmplib.org/) is installed; this library is necessary for the MCL pairings operations. 
+GMP can be installed using the following terminal commands:
+
+    sudo apt install libgmp-dev (on Ubuntu)
+    brew install gmp (on MacOS)
+
+Then clone this respository and make the following edits to the files described below, as needed:
 
 - To build for **Mac M1**, simply navigate to the `c_code` directory.
 

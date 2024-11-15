@@ -3,7 +3,7 @@ This is the artifact for "Re-visiting Authorized Private Set Intersection: A New
 In this respository, you will find implementations and tests for three protocols:
 
 1. The Authorized Private Set Intersection (APSI) protocol from Falzon and Markatou (PoPETS 2025)
-2. The Parital-APSI protocol from Falzon and Markatou (PoPETS 2025)
+2. The Partial-APSI protocol from Falzon and Markatou (PoPETS 2025)
 3. The APSI protocol from De Cristofaro and Tsudik (Financial Crypto 2010)
 
 The third protocol is re-implemented for comparison. 
